@@ -9,9 +9,10 @@ public class Spaceship extends WObject{
     public Spaceship(int x, int y) {
         super(x, y);
         setSpeed(25);
-        initSpaceship();
+        initImage();
     }
-    private void initSpaceship() {
+    @Override
+   public void initImage() {
         Image imagesSpaceship = new ImageIcon("images/spaceship.png").getImage();
         setImage(imagesSpaceship);
     }

@@ -1,5 +1,6 @@
 import Constant.Constant;
 import command.*;
+import model.Alien;
 import model.Spaceship;
 import model.World;
 
@@ -67,13 +68,22 @@ public class Window extends JFrame implements Observer {
         @Override
         public void paint(Graphics g) {
             super.paint(g);
-            setBackground(Color.BLACK);
+            setBackground(Color.white);
             drawSpaceship(g);
+            drawAlien(g);
         }
 
         private void drawSpaceship(Graphics g){
             if(world.getSpaceship().isAlive()){
                 g.drawImage(world.getSpaceship().getImage(), world.getSpaceship().getX(),world.getSpaceship().getY(),null,null);
+            }
+        }
+
+        private void drawAlien(Graphics g){
+            for (Alien alien : world.getAliens()){
+                if (alien.isAlive()){
+                    g.drawImage(alien.getImage(),alien.getX(),alien.getY(),null,null);
+                }
             }
         }
     }

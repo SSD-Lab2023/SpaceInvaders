@@ -111,4 +111,9 @@ public abstract class WObject {
 
     }
 
+    public void initImage(){
+
+    }
+
+
 }
