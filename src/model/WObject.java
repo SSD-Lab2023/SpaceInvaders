@@ -4,9 +4,6 @@ import java.awt.*;
 
 public abstract class WObject {
 
-
-
-
     private int x;
     private int y;
 
@@ -108,6 +105,10 @@ public abstract class WObject {
     public void stop(){
         this.dx = 0;
         this.dy = 0;
+    }
+
+    public void checkOutField(){
+
     }
 
 }

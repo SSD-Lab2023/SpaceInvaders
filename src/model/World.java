@@ -43,6 +43,7 @@ public class World extends Observable {
                 public void run() {
                     while (!isOver) {
                         spaceship.move();
+                        spaceship.checkOutField();
                         setChanged();
                         notifyObservers();
                         waitFor(delayed);

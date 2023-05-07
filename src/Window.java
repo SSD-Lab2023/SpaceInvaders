@@ -1,3 +1,4 @@
+import Constant.Constant;
 import command.*;
 import model.Spaceship;
 import model.World;
@@ -12,8 +13,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class Window extends JFrame implements Observer {
-
-    private final int SIZE = 600;
     private World world;
     private GridUI gridUI = new GridUI();
     private Renderer renderer;
@@ -29,7 +28,7 @@ public class Window extends JFrame implements Observer {
         add(renderer, BorderLayout.CENTER);
         add(gridUI, BorderLayout.SOUTH);
         setResizable(false);
-        setSize(SIZE,SIZE);
+        setSize(Constant.SIZE,Constant.SIZE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
