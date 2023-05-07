@@ -1,21 +1,20 @@
 package model;
 
-public class Spaceship extends WObject{
+import javax.swing.*;
+import java.awt.*;
 
-    private int dx;
-    private int dy;
+public class Spaceship extends WObject{
 
     public Spaceship(int x, int y) {
         super(x, y);
+        setSpeed(25);
+        initSpaceship();
+    }
+    private void initSpaceship() {
+        Image imagesSpaceship = new ImageIcon("images/spaceship.png").getImage();
+        setImage(imagesSpaceship);
     }
 
-    public void turnWest() {
-        dx = -1;
-        dy = 0;
-    }
 
-    public void turnEast() {
-        dx = 1;
-        dy = 0;
-    }
+
 }
