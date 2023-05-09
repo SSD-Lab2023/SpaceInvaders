@@ -18,11 +18,8 @@ public class World extends Observable {
 
     private List<Bullet> bullets;
     public BulletPool bulletPool = new BulletPool();
-//    public Bullet bullet;
-
     public World(){
         spaceship = new Spaceship(300-32,450);
-//        bullet = new Bullet(spaceship.getX()-10, spaceship.getY()-10);
         initAlien();
     }
 
