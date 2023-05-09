@@ -1,6 +1,7 @@
 import Constant.Constant;
 import command.*;
 import model.Alien;
+import model.Bullet;
 import model.Spaceship;
 import model.World;
 
@@ -71,6 +72,7 @@ public class Window extends JFrame implements Observer {
             setBackground(Color.white);
             drawSpaceship(g);
             drawAlien(g);
+            drawBullet(g);
         }
 
         private void drawSpaceship(Graphics g){
@@ -86,6 +88,14 @@ public class Window extends JFrame implements Observer {
                 }
             }
         }
+
+        private void drawBullet(Graphics g){
+            if (world.getSpaceship().isAlive()){
+                Bullet bullet = world.bulletPool.getBullet(world.getSpaceship().getX()+20, world.getSpaceship().getY()-20,1,1);
+                g.drawImage(bullet.getImage(), world.getSpaceship().getX()+11, world.getSpaceship().getY()-20,null,null);
+                System.out.println("Fire");
+            }
+        }
     }
 
     class Controller extends KeyAdapter {
@@ -96,21 +106,26 @@ public class Window extends JFrame implements Observer {
             if(e.getKeyCode() == KeyEvent.VK_A) {
                 Command c = new CommandTurnWest(spaceship);
                 c.execute();
-                System.out.println(world.getSpaceship().getX());
+                System.out.println("left" + world.getSpaceship().getX());
 
             } else if(e.getKeyCode() == KeyEvent.VK_D){
                 Command c = new CommandTurnEast(spaceship);
                 c.execute();
-                System.out.println(world.getSpaceship().getX());
+                System.out.println("right" + world.getSpaceship().getX());
             }
 
             if(e.getKeyCode() == KeyEvent.VK_SPACE) {
                 Command c = new CommandShoot(spaceship, world);
                 c.execute();
+                System.out.println("Shoot");
+
             } else if (e.getKeyCode() == KeyEvent.VK_L) {
                 // Laser gun
+                System.out.println("Laser");
+
             } else if (e.getKeyCode() == KeyEvent.VK_B) {
                 // Bomb
+                System.out.println("Bomb");
             }
 
         }

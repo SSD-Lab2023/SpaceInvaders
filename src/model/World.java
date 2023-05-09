@@ -2,9 +2,6 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Spaceship;
-import javax.swing.*;
-import java.awt.*;
 import java.util.Observable;
 
 public class World extends Observable {
@@ -20,11 +17,12 @@ public class World extends Observable {
     private List<Alien> aliens;
 
     private List<Bullet> bullets;
-    public BulletPool bulletpool = new BulletPool();
-
+    public BulletPool bulletPool = new BulletPool();
+//    public Bullet bullet;
 
     public World(){
         spaceship = new Spaceship(300-32,450);
+//        bullet = new Bullet(spaceship.getX()-10, spaceship.getY()-10);
         initAlien();
     }
 
@@ -53,7 +51,12 @@ public class World extends Observable {
     public List<Bullet> getBullets() {
         return bullets;
     }
-    public void burstBullets(int x, int y) {
+    public void shootBullets(Spaceship spaceship) {
+        if (!spaceship.isFired()){
+            Bullet bullet = bulletPool.getBullet(spaceship.getX()+16, spaceship.getY()-10, 1,1);
+            bullet.move();
+            bullet.setFired(true);
+        }
     }
 
     public void startGame(){
