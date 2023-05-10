@@ -1,5 +1,7 @@
 package model;
 
+import Constant.Constant;
+
 import java.awt.*;
 
 public abstract class WObject {

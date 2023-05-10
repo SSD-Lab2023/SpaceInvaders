@@ -1,5 +1,8 @@
 package model;
+import Constant.Constant;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import java.util.Observable;
@@ -33,13 +36,13 @@ public class World extends Observable {
 
     public void initAlien(){
         aliens = new ArrayList<>();
-        for (int row = 0; row < 5; row++){
+        for (int row = 0; row < 4; row++){
             for(int col = 0; col < 8; col++){
                 if (row == 0){
-                    AlienLevel2 alien = new AlienLevel2(100 + 50 * col, 100 + 30 * row);
+                    AlienLevel2 alien = new AlienLevel2(100 + 50 * col, 50 + 30 * row);
                     aliens.add(alien);
                 }
-                Alien alien = new Alien(100 + 50  * col, 100 + 30 * row);
+                Alien alien = new Alien(100 + 50  * col, 50 + 30 * row);
                 aliens.add(alien);
             }
         }
@@ -72,24 +75,52 @@ public class World extends Observable {
                     while (!isOver) {
                         spaceship.move();
                         spaceship.checkOutField();
-                        for(Alien alien: aliens){
-                            alien.move();
-                        }
+                        chooseDirectionOfAlien();
+                        moveAlien();
                         moveBullet();
                         setChanged();
                         notifyObservers();
                         waitFor(delayed);
+                        }
                     }
-                }
+                };
+        thread.start();
             };
-            thread.start();
-    }
 
     private void waitFor(long delayed) {
         try {
             Thread.sleep(delayed);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void chooseDirectionOfAlien(){
+        for(Alien alien: aliens){
+
+            if (alien.getDx() == 0){
+                alien.turnEast();
+            }
+            int x = alien.getX();
+            if (x >= Constant.SIZE - 60 && alien.getDx() != -1) {
+
+                for (Alien a : aliens) {
+                    a.turnWest();
+                    a.setY(a.getY() + 5);
+                }
+            }
+            if (x <= 10 && alien.getDx() != 1) {
+                for (Alien a : aliens) {
+                    a.turnEast();
+                    a.setY(a.getY() + 5);
+                }
+            }
+
+        }
+    }
+    private void moveAlien(){
+        for (Alien alien: aliens){
+            alien.move();
         }
     }
 
