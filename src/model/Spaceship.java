@@ -8,7 +8,7 @@ import java.awt.*;
 public class Spaceship extends WObject{
     public Spaceship(int x, int y) {
         super(x, y);
-        setSpeed(25);
+        setSpeed(24);
         initImage();
     }
     @Override

@@ -90,10 +90,12 @@ public class Window extends JFrame implements Observer {
         }
 
         private void drawBullet(Graphics g){
-            if (world.getSpaceship().isAlive()){
-                Bullet bullet = world.bulletPool.getBullet(world.getSpaceship().getX()+20, world.getSpaceship().getY()-20,1,1);
-                g.drawImage(bullet.getImage(), world.getSpaceship().getX()+11, world.getSpaceship().getY()-20,null,null);
-                System.out.println("Fire");
+            if (world.getSpaceship().isAlive()) {
+                for (Bullet bullet: world.getBullets()){
+                    int x = bullet.getX();
+                    int y = bullet.getY();
+                    g.drawImage(bullet.getImage(), x,y,null,null);
+                }
             }
         }
     }
@@ -118,6 +120,7 @@ public class Window extends JFrame implements Observer {
                 Command c = new CommandShoot(spaceship, world);
                 c.execute();
                 System.out.println("Shoot");
+                spaceship.setFired(false);
 
             } else if (e.getKeyCode() == KeyEvent.VK_L) {
                 // Laser gun

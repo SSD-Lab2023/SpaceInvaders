@@ -13,13 +13,9 @@ public class BulletPool {
 
     public Bullet getBullet(int x, int y, int dx, int dy){
         Bullet bullet = bullets.get(num);
-        bullet.reset(0,0,0,2);
+        bullet.reset(x,y,dx,dy);
         num = (num+1)% bullets.size();
         return bullet;
-    }
-
-    public void addBullet(Bullet bullet){
-        bullets.add(bullet);
     }
 
 }

@@ -1,4 +1,5 @@
 package command;
+import model.Bullet;
 import model.Spaceship;
 import model.World;
 
@@ -13,6 +14,6 @@ public class CommandShoot extends Command{
     }
     @Override
     public void execute() {
-
+        world.shootBullets(getSpaceship());
     }
 }

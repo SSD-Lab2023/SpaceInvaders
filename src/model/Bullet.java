@@ -1,5 +1,7 @@
 package model;
 
+import Constant.Constant;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,6 +9,7 @@ public class Bullet extends WObject{
 
     public Bullet(int x, int y) {
         super(x, y);
+        setSpeed(50);
         initImage();
     }
     public void reset(int x, int y, int dx, int dy) {
@@ -20,6 +23,14 @@ public class Bullet extends WObject{
     public void initImage() {
         Image imageBullet = new ImageIcon("images/bullet.png").getImage();
         setImage(imageBullet);
+    }
+
+    @Override
+    public void checkOutField() {
+        // ออกนอก window
+        if (getY() <= Constant.SIZE){
+            this.setAlive(false);
+        }
     }
 }
 

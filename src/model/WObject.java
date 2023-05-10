@@ -115,5 +115,9 @@ public abstract class WObject {
 
     }
 
+    public void moveForward() {
+        this.dx = 0;
+        this.dy = -1;
+    }
 
 }

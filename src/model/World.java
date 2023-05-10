@@ -16,7 +16,7 @@ public class World extends Observable {
     private boolean alive;
     private List<Alien> aliens;
 
-    private List<Bullet> bullets;
+    private List<Bullet> bullets = new ArrayList<Bullet>();
     public BulletPool bulletPool = new BulletPool();
     public World(){
         spaceship = new Spaceship(300-32,450);
@@ -48,11 +48,19 @@ public class World extends Observable {
     public List<Bullet> getBullets() {
         return bullets;
     }
+
+    public void moveBullet() {
+        for (Bullet bullet: bullets) {
+            bullet.moveForward();
+            bullet.move();
+        }
+    }
     public void shootBullets(Spaceship spaceship) {
         if (!spaceship.isFired()){
-            Bullet bullet = bulletPool.getBullet(spaceship.getX()+16, spaceship.getY()-10, 1,1);
-            bullet.move();
-            bullet.setFired(true);
+            Bullet bullet = bulletPool.getBullet(spaceship.getX()+16, spaceship.getY()-10, spaceship.getDx(),-spaceship.getDy());
+            moveBullet();
+            bullets.add(bullet);
+            spaceship.setFired(true);
         }
     }
 
@@ -67,6 +75,7 @@ public class World extends Observable {
                         for(Alien alien: aliens){
                             alien.move();
                         }
+                        moveBullet();
                         setChanged();
                         notifyObservers();
                         waitFor(delayed);
