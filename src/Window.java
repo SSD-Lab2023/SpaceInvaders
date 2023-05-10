@@ -13,6 +13,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.TimeUnit;
 
 public class Window extends JFrame implements Observer {
     private World world;
@@ -36,12 +37,44 @@ public class Window extends JFrame implements Observer {
 
     public void start(){
         setVisible(true);
+        while (true) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+            update();
+        }
     }
 
     @Override
     public void update(Observable o, Object arg) {
         renderer.repaint();
     }
+
+    private void update() {
+        for (Alien alien : world.getAliens()) {
+            int x = alien.getX();
+            System.out.println(alien.getDx());
+            if (x >= Constant.SIZE || x <= 0) {
+                for (Alien a : world.getAliens()) {
+
+                    if (x >= Constant.SIZE){
+                        a.turnWest();
+                    }else{
+                        a.turnEast();
+                    }
+
+                    System.out.println(a.getDx());
+                    System.out.println(a.getX());
+                    a.setY(a.getY() + 10);
+                }
+
+            }
+            alien.setX(50+alien.getX());
+        }
+    }
+
 
     class GridUI extends JPanel {
         private JButton startButton;
@@ -133,10 +166,12 @@ public class Window extends JFrame implements Observer {
 
         }
 
+
         @Override
         public void keyReleased(KeyEvent e) {
 
             Spaceship spaceship = world.getSpaceship();
+
             if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_D) {
                 Command c = new CommandStop(spaceship);
                 c.execute();
