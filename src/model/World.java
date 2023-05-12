@@ -30,26 +30,7 @@ public class World extends Observable {
         initAlien();
     }
 
-    public void startGame(){
-        isOver = false;
-        thread = new Thread() {
-            @Override
-            public void run() {
-                while (!isOver) {
-                    spaceship.move();
-                    spaceship.checkOutField();
-                    chooseDirectionOfAlien();
-                    moveAlien();
-                    moveBullet();
-                    moveLaser();
-                    setChanged();
-                    notifyObservers();
-                    waitFor(delayed);
-                }
-            }
-        };
-        thread.start();
-    };
+
 
     public Spaceship getSpaceship() {
         return spaceship;

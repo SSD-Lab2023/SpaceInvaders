@@ -128,7 +128,7 @@ public class Window extends JFrame implements Observer {
 
             if(e.getKeyCode() == KeyEvent.VK_SPACE) {
                 Command c = new CommandShoot(spaceship, world);
-                c.execute()
+                c.execute();
 
             } else if (e.getKeyCode() == KeyEvent.VK_L) {
                 // Laser gun

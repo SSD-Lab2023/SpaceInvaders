@@ -31,7 +31,4 @@ public class BulletPool {
         return laser;
     }
 
-    public void releaseBullet(Bullet bullet) {
-        bullets.add(bullet);
-    }
 }
