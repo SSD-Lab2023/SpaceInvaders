@@ -19,5 +19,5 @@ To play the game, start the application by clicking the start button and then us
 
 ## Design Patterns 
 Observer  
-Command 
+Command  
 ObjectPool 
