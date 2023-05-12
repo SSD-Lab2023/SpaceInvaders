@@ -136,23 +136,14 @@ public class World extends Observable {
         }
     }
 
-
     private void checkHit() {
         List<Bullet> toRemoveBullet = new ArrayList<Bullet>();
         List<Alien> toRemoveAlians = new ArrayList<Alien>();
         for(Bullet bullet : bullets) {
             for (Alien alien : aliens) {
-                System.out.println(alien.getX());
-                System.out.println(bullet.getX());
-                System.out.println("this is abb"+Math.abs(bullet.getX() - alien.getX()));
-
-
                 if(Math.abs(bullet.getX() - alien.getX()) <= 20 && Math.abs(alien.getY() - bullet.getY()) <= 10) {
-
                     toRemoveBullet.add(bullet);
                     toRemoveAlians.add(alien);
-
-                    System.out.println("yee shoot drone");
                     }
                 }
             }
