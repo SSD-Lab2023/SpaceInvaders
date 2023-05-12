@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import java.util.Observable;
+import javax.swing.*;
 
 public class World extends Observable {
 
@@ -14,7 +15,7 @@ public class World extends Observable {
     private Spaceship spaceship;
     private Boolean isOver;
 
-    private long delayed = 250;
+    private long delayed = 50;
 
     private boolean alive;
     private List<Alien> aliens;
@@ -73,11 +74,13 @@ public class World extends Observable {
                 @Override
                 public void run() {
                     while (!isOver) {
+                        checkplayer();
                         spaceship.move();
                         spaceship.checkOutField();
                         chooseDirectionOfAlien();
                         moveAlien();
                         moveBullet();
+                        checkHit();
                         setChanged();
                         notifyObservers();
                         waitFor(delayed);
@@ -124,5 +127,41 @@ public class World extends Observable {
         }
     }
 
+    private void checkplayer(){
+        for(Alien alien: aliens) {
+            if(Math.abs(alien.getY() - spaceship.getY()) <= 32){
+                isOver = true;
+                JOptionPane.showMessageDialog(null, "Game Over!");
+            }
+        }
+    }
 
+
+    private void checkHit() {
+        List<Bullet> toRemoveBullet = new ArrayList<Bullet>();
+        List<Alien> toRemoveAlians = new ArrayList<Alien>();
+        for(Bullet bullet : bullets) {
+            for (Alien alien : aliens) {
+                System.out.println(alien.getX());
+                System.out.println(bullet.getX());
+                System.out.println("this is abb"+Math.abs(bullet.getX() - alien.getX()));
+
+
+                if(Math.abs(bullet.getX() - alien.getX()) <= 20 && Math.abs(alien.getY() - bullet.getY()) <= 10) {
+
+                    toRemoveBullet.add(bullet);
+                    toRemoveAlians.add(alien);
+
+                    System.out.println("yee shoot drone");
+                    }
+                }
+            }
+        for(Bullet bullet : toRemoveBullet) {
+            bullets.remove(bullet);
+            bulletPool.releaseBullet(bullet);
+        }
+        for(Alien alien : toRemoveAlians) {
+            aliens.remove(alien);
+        }
+        }
 }
