@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import java.util.Observable;
+import javax.swing.*;
 
 public class World extends Observable {
 
@@ -15,7 +16,8 @@ public class World extends Observable {
     private Spaceship spaceship;
     private Boolean isOver;
 
-    private long delayed = 127;
+
+    private long delayed = 50;
 
     private boolean alive;
     private List<Alien> aliens;
@@ -37,7 +39,6 @@ public class World extends Observable {
                     spaceship.move();
                     spaceship.checkOutField();
                     chooseDirectionOfAlien();
-//                    cleanupBullets();
                     moveAlien();
                     moveBullet();
                     moveLaser();
@@ -102,6 +103,7 @@ public class World extends Observable {
 
     }
 
+
     public void laserBeam(Spaceship spaceship) {
         if (!spaceship.isFired()) {
             // ยิงได้ และ กระสุ่นเก่าออกนอกขอบไปแล้ว
@@ -112,6 +114,28 @@ public class World extends Observable {
         }
     }
 
+    public void startGame(){
+        isOver = false;
+        thread = new Thread() {
+                @Override
+                public void run() {
+                    while (!isOver) {
+                        checkplayer();
+                        spaceship.move();
+                        spaceship.checkOutField();
+                        chooseDirectionOfAlien();
+                        moveAlien();
+                        moveBullet();
+                        moveLaser();
+                        checkHit();
+                        setChanged();
+                        notifyObservers();
+                        waitFor(delayed);
+                        }
+                    }
+                };
+        thread.start();
+            };
 
 
     private void waitFor(long delayed) {
@@ -151,5 +175,32 @@ public class World extends Observable {
         }
     }
 
+    private void checkplayer(){
+        for(Alien alien: aliens) {
+            if(Math.abs(alien.getY() - spaceship.getY()) <= 32){
+                isOver = true;
+                JOptionPane.showMessageDialog(null, "Game Over!");
+            }
+        }
+    }
 
+    private void checkHit() {
+        List<Bullet> toRemoveBullet = new ArrayList<Bullet>();
+        List<Alien> toRemoveAlians = new ArrayList<Alien>();
+        for(Bullet bullet : bullets) {
+            for (Alien alien : aliens) {
+                if(Math.abs(bullet.getX() - alien.getX()) <= 20 && Math.abs(alien.getY() - bullet.getY()) <= 10) {
+                    toRemoveBullet.add(bullet);
+                    toRemoveAlians.add(alien);
+                    }
+                }
+            }
+        for(Bullet bullet : toRemoveBullet) {
+            bullets.remove(bullet);
+            bulletPool.releaseBullet(bullet);
+        }
+        for(Alien alien : toRemoveAlians) {
+            aliens.remove(alien);
+        }
+        }
 }

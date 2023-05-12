@@ -19,6 +19,10 @@ public class BulletPool {
         num = (num+1)% bullets.size();
         return bullet;
     }
+    public void releaseBullet(Bullet bullet) {
+        bullets.add(bullet);
+    }
+
 
     public LaserBeam getLaser(int x, int y, int dx, int dy) {
         LaserBeam laser = lasers.get(num);

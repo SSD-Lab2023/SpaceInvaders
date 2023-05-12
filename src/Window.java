@@ -118,29 +118,25 @@ public class Window extends JFrame implements Observer {
             if(e.getKeyCode() == KeyEvent.VK_A) {
                 Command c = new CommandTurnWest(spaceship);
                 c.execute();
-                System.out.println("left" + world.getSpaceship().getX());
+
 
             } else if(e.getKeyCode() == KeyEvent.VK_D){
                 Command c = new CommandTurnEast(spaceship);
                 c.execute();
-                System.out.println("right" + world.getSpaceship().getX());
+
             }
 
             if(e.getKeyCode() == KeyEvent.VK_SPACE) {
                 Command c = new CommandShoot(spaceship, world);
-                c.execute();
-                System.out.println("Shoot");
+                c.execute()
 
             } else if (e.getKeyCode() == KeyEvent.VK_L) {
                 // Laser gun
                 Command c = new CommandShootLaser(spaceship, world);
                 c.execute();
-                System.out.println("Laser");
 
-            } else if (e.getKeyCode() == KeyEvent.VK_B) {
-                // Bomb
-                System.out.println("Bomb");
-            }
+            } 
+
 
         }
 
