@@ -1,5 +1,6 @@
 package model;
 import Constant.Constant;
+import command.Command;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,17 +15,40 @@ public class World extends Observable {
     private Spaceship spaceship;
     private Boolean isOver;
 
-    private long delayed = 250;
+    private long delayed = 127;
 
     private boolean alive;
     private List<Alien> aliens;
 
     private List<Bullet> bullets = new ArrayList<Bullet>();
     public BulletPool bulletPool = new BulletPool();
+    public List<LaserBeam> lasers = new ArrayList<LaserBeam>();
     public World(){
         spaceship = new Spaceship(300-32,450);
         initAlien();
     }
+
+    public void startGame(){
+        isOver = false;
+        thread = new Thread() {
+            @Override
+            public void run() {
+                while (!isOver) {
+                    spaceship.move();
+                    spaceship.checkOutField();
+                    chooseDirectionOfAlien();
+//                    cleanupBullets();
+                    moveAlien();
+                    moveBullet();
+                    moveLaser();
+                    setChanged();
+                    notifyObservers();
+                    waitFor(delayed);
+                }
+            }
+        };
+        thread.start();
+    };
 
     public Spaceship getSpaceship() {
         return spaceship;
@@ -34,6 +58,12 @@ public class World extends Observable {
         return aliens;
     }
 
+    public List<Bullet> getBullets() {
+        return bullets;
+    }
+    public List<LaserBeam> getLasers() {
+        return lasers;
+    }
     public void initAlien(){
         aliens = new ArrayList<>();
         for (int row = 0; row < 4; row++){
@@ -48,44 +78,41 @@ public class World extends Observable {
         }
     }
 
-    public List<Bullet> getBullets() {
-        return bullets;
-    }
-
     public void moveBullet() {
         for (Bullet bullet: bullets) {
             bullet.moveForward();
             bullet.move();
         }
     }
+
+    public void moveLaser() {
+        for (LaserBeam laser: lasers) {
+            laser.moveForward();
+            laser.move();
+        }
+    }
+
     public void shootBullets(Spaceship spaceship) {
         if (!spaceship.isFired()){
-            Bullet bullet = bulletPool.getBullet(spaceship.getX()+16, spaceship.getY()-10, spaceship.getDx(),-spaceship.getDy());
+            Bullet bullet = bulletPool.getBullet(spaceship.getX()+14, spaceship.getY()-10, spaceship.getDx(),-spaceship.getDy());
             moveBullet();
             bullets.add(bullet);
             spaceship.setFired(true);
         }
+
     }
 
-    public void startGame(){
-        isOver = false;
-        thread = new Thread() {
-                @Override
-                public void run() {
-                    while (!isOver) {
-                        spaceship.move();
-                        spaceship.checkOutField();
-                        chooseDirectionOfAlien();
-                        moveAlien();
-                        moveBullet();
-                        setChanged();
-                        notifyObservers();
-                        waitFor(delayed);
-                        }
-                    }
-                };
-        thread.start();
-            };
+    public void laserBeam(Spaceship spaceship) {
+        if (!spaceship.isFired()) {
+            // ยิงได้ และ กระสุ่นเก่าออกนอกขอบไปแล้ว
+            LaserBeam laser = bulletPool.getLaser(spaceship.getX()-9, spaceship.getY()-100, spaceship.getDx(),-spaceship.getDy());
+            moveLaser();
+            bullets.add(laser);
+            spaceship.setFired(true);
+        }
+    }
+
+
 
     private void waitFor(long delayed) {
         try {

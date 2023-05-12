@@ -7,6 +7,7 @@ import java.awt.*;
 
 public class Bullet extends WObject{
 
+    private long lastFire;
     public Bullet(int x, int y) {
         super(x, y);
         setSpeed(50);

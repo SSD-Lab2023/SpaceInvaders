@@ -15,5 +15,7 @@ public class CommandShoot extends Command{
     @Override
     public void execute() {
         world.shootBullets(getSpaceship());
+        world.getSpaceship().setFired(false);
+
     }
 }
