@@ -17,5 +17,9 @@ public class BulletPool {
         num = (num+1)% bullets.size();
         return bullet;
     }
+    public void releaseBullet(Bullet bullet) {
+        bullets.add(bullet);
+    }
+
 
 }
