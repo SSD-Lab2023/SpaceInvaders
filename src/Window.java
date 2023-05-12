@@ -1,9 +1,6 @@
 import Constant.Constant;
 import command.*;
-import model.Alien;
-import model.Bullet;
-import model.Spaceship;
-import model.World;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -75,6 +72,7 @@ public class Window extends JFrame implements Observer {
             drawSpaceship(g);
             drawAlien(g);
             drawBullet(g);
+            drawLaser(g);
         }
 
         private void drawSpaceship(Graphics g){
@@ -100,6 +98,16 @@ public class Window extends JFrame implements Observer {
                 }
             }
         }
+
+        private  void drawLaser(Graphics g){
+            if (world.getSpaceship().isAlive()) {
+                for (LaserBeam laser: world.getLasers()){
+                    int x = laser.getX();
+                    int y = laser.getY();
+                    g.drawImage(laser.getImage(), x,y,null,null);
+                }
+            }
+        }
     }
 
     class Controller extends KeyAdapter {
@@ -120,18 +128,15 @@ public class Window extends JFrame implements Observer {
 
             if(e.getKeyCode() == KeyEvent.VK_SPACE) {
                 Command c = new CommandShoot(spaceship, world);
-                c.execute();
-
-                spaceship.setFired(false);
+                c.execute()
 
             } else if (e.getKeyCode() == KeyEvent.VK_L) {
                 // Laser gun
+                Command c = new CommandShootLaser(spaceship, world);
+                c.execute();
 
+            } 
 
-            } else if (e.getKeyCode() == KeyEvent.VK_B) {
-                // Bomb
-
-            }
 
         }
 
